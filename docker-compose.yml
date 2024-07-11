@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   wp:
@@ -54,7 +54,7 @@ services:
 #     - ./config/pma_config.php:/etc/phpmyadmin/config.user.inc.php
 
   db:
-    image: mysql:latest # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
+    image: mysql:8.0 # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
     # platform: linux/x86_64  # Uncomment if your machine is running on arm (ex: Apple Silicon processor)
     ports:
       - 3306:3306 # change ip if required
@@ -64,10 +64,6 @@ services:
        - --character-set-server=utf8mb4
        - --collation-server=utf8mb4_unicode_ci
        - --max_connections=10000
-       - --query="CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_USER_PASSWORD}';"
-       - --query="GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';"
-       - --query="flush privileges;"
-
     volumes:
       - ./mysql/data:/var/lib/mysql
       - ./mysql/config/my.cnf:/etc/mysql/my.cnf
