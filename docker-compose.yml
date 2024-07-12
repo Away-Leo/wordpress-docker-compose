@@ -2,19 +2,21 @@ version: '3.8'
 
 services:
   wp:
-    image: wordpress:latest # https://hub.docker.com/_/wordpress/
+    image: docker.io/bitnami/wordpress:latest # https://hub.docker.com/_/wordpress/
     ports:
-      - ${PORT}:80 # change ip if required
+      - ${PORT}:8080 # change ip if required
     volumes:
+      - wordpress_data:/bitnami/wordpress
 #      - ./config/wp_php.ini:/usr/local/etc/php/conf.d/conf.ini
-      - ./wp-app:/var/www/html # Full wordpress project
+#      - ./wp-app:/var/www/html # Full wordpress project
       #- ./plugin-name/trunk/:/var/www/html/wp-content/plugins/plugin-name # Plugin development
       #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
     environment:
-      WORDPRESS_DB_HOST: 10.124.0.3
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
+      ALLOW_EMPTY_PASSWORD: yes
+      WORDPRESS_DATABASE_HOST: 10.124.0.3
+      WORDPRESS_DATABASE_NAME: wordpress
+      WORDPRESS_DATABASE_USER: wordpress
+      WORDPRESS_DATABASE_PASSWORD: wordpress
 #    depends_on:
 #      - db
 #    links:
