@@ -12,11 +12,11 @@ services:
       #- ./plugin-name/trunk/:/var/www/html/wp-content/plugins/plugin-name # Plugin development
       #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
     environment:
-      ALLOW_EMPTY_PASSWORD: yes
+      ALLOW_EMPTY_PASSWORD: no
       WORDPRESS_DATABASE_HOST: 10.124.0.3
       WORDPRESS_DATABASE_NAME: wordpress
-      WORDPRESS_DATABASE_USER: wordpress
-      WORDPRESS_DATABASE_PASSWORD: wordpress
+      WORDPRESS_DATABASE_USER: root
+      WORDPRESS_DATABASE_PASSWORD: 123456
 #    depends_on:
 #      - db
 #    links:
