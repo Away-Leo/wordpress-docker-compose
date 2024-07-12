@@ -6,7 +6,7 @@ services:
     ports:
       - ${PORT}:8080 # change ip if required
     volumes:
-      - ./wordpress_data:/bitnami/wordpress
+      - wordpress_data:/bitnami/wordpress
 #      - ./config/wp_php.ini:/usr/local/etc/php/conf.d/conf.ini
 #      - ./wp-app:/var/www/html # Full wordpress project
       #- ./plugin-name/trunk/:/var/www/html/wp-content/plugins/plugin-name # Plugin development
@@ -53,7 +53,10 @@ services:
 #    restart: always
 
 volumes:
-  db_data:
+  mariadb_data:
+    driver: local
+  wordpress_data:
+    driver: local
 
 networks:
   wordpress-network:
