@@ -4,7 +4,7 @@ services:
   wp:
     image: docker.io/bitnami/wordpress:latest # https://hub.docker.com/_/wordpress/
     ports:
-      - ${PORT}:8080 # change ip if required
+      - ${PORT}:80 # change ip if required
     volumes:
       - ./wordpress_data:/bitnami/wordpress
 #      - ./config/wp_php.ini:/usr/local/etc/php/conf.d/conf.ini
@@ -13,50 +13,44 @@ services:
       #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
     environment:
       ALLOW_EMPTY_PASSWORD: no
-      WORDPRESS_DATABASE_HOST: 10.124.0.3
-      WORDPRESS_DATABASE_NAME: wordpress
-      WORDPRESS_DATABASE_USER: root
-      WORDPRESS_DATABASE_PASSWORD: 123456
-#    depends_on:
-#      - db
-#    links:
-#      - db
-#    networks:
-#      - wordpress-network
+      WORDPRESS_DATABASE_HOST: "${DB_HOST}"
+      WORDPRESS_DATABASE_NAME: "${DB_NAME}"
+      WORDPRESS_DATABASE_USER: "${DB_USER}"
+      WORDPRESS_DATABASE_PASSWORD: "${DB_USER_PASSWORD}"
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - wordpress-network
     restart: always
 
-#  db:
-#    image: mysql:8.4.1 # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
-#    # platform: linux/x86_64  # Uncomment if your machine is running on arm (ex: Apple Silicon processor)
-#    ports:
-#      - 3306:3306 # change ip if required
-#    security_opt:
-#      - seccomp:unconfined
-#    command:
-#       - --character-set-server=utf8mb4
-#       - --collation-server=utf8mb4_unicode_ci
-#       - --max_connections=10000
-#    volumes:
-#      - ./mysql/data:/var/lib/mysql
-#      - ./mysql/config/my.cnf:/etc/mysql/my.cnf
-#      - ./mysql/init:/docker-entrypoint-initdb.d
-#      - ./mysql/log:/var/log/mysql
-#      - ./mysql/mysql-files:/var/lib/mysql-files
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-#      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
-#      MYSQL_DATABASE: "${DB_NAME}"
-#      MYSQL_USER: "${DB_USER}"
-#      MYSQL_PASS: "${DB_USER_PASSWORD}"
-#    networks:
-#      - wordpress-network
-#    restart: always
-
-volumes:
-  mariadb_data:
-    driver: local
-  wordpress_data:
-    driver: local
+  db:
+    image: mysql:8.4.1 # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
+    # platform: linux/x86_64  # Uncomment if your machine is running on arm (ex: Apple Silicon processor)
+    ports:
+      - 3306:3306 # change ip if required
+    security_opt:
+      - seccomp:unconfined
+    command:
+       - --character-set-server=utf8mb4
+       - --collation-server=utf8mb4_unicode_ci
+       - --max_connections=10000
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/config/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/log:/var/log/mysql
+      - ./mysql/mysql-files:/var/lib/mysql-files
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASS: "${DB_USER_PASSWORD}"
+    networks:
+      - wordpress-network
+    restart: always
 
 networks:
   wordpress-network:
